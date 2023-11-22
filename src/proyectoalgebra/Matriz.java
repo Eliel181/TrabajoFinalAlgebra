@@ -6,11 +6,12 @@ import javax.swing.JOptionPane;
 public class Matriz extends javax.swing.JFrame {
 
     int matriz[][];
+
     public Matriz() {
         initComponents();
-        
+
     }
-    
+
     //esta funcion verifica si la matriz es transitiva
     public static boolean esMatrizTransitiva(int[][] matriz) {
         int n = matriz.length;
@@ -37,7 +38,7 @@ public class Matriz extends javax.swing.JFrame {
         // Si no se encontró ninguna inconsistencia, la matriz es transitiva
         return true;
     }
-    
+
     public static String obtenerRelacion(int[][] matriz) {
         int n = matriz.length;
 
@@ -65,13 +66,13 @@ public class Matriz extends javax.swing.JFrame {
 
         return relacion.toString();
     }
-    
+
     //Mostrar Matriz en El formulario
-    public void MostrarMatriz(){
+    public void MostrarMatriz() {
         String cadena = "";
         for (int i = 0; i < matriz.length; i++) {
             for (int j = 0; j < matriz.length; j++) {
-                cadena += "["+matriz[i][j]+"] ";
+                cadena += "[" + matriz[i][j] + "] ";
             }
             cadena += "\n";
         }
@@ -272,30 +273,40 @@ public class Matriz extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAtrasActionPerformed
 
     private void btnCargarMatrizActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCargarMatrizActionPerformed
-        int n = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el tamaño de la matriz cuadrada (n): "));
+        try {
+            int n = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el tamaño de la matriz cuadrada (n): "));
 
-        matriz = new int[n][n];
+            matriz = new int[n][n];
 
-        // Ingresar elementos de la matriz
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                matriz[i][j] = Integer.parseInt(JOptionPane.showInputDialog("Ingresar numero(1 o 0) en pocision ["+i+"]["+j+"]"));
+            // Ingresar elementos de la matriz
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < n; j++) {
+                    matriz[i][j] = Integer.parseInt(JOptionPane.showInputDialog("Ingresar numero(1 o 0) en pocision [" + i + "][" + j + "]"));
+                    if(matriz[i][j] > 1 || matriz[i][j] < 0){
+                         throw new IllegalStateException("Valor Incorrecto, debes ingresar un 0 o un 1");
+                    }
+                }
             }
-        }
-        MostrarMatriz();
+            MostrarMatriz();
 
-        
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(null, "no debes ingresar caracteres o letras");
+        } catch (IllegalStateException ex){
+            JOptionPane.showMessageDialog(null, ex.getMessage());
+        }
+
+
     }//GEN-LAST:event_btnCargarMatrizActionPerformed
 
     private void btnCalcularPropiedadesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCalcularPropiedadesActionPerformed
         // Verificar si la matriz es no simétrica y/o antisimétrica
         boolean noSimetrica = false;
         boolean antisimetrica = true;
-        
+
         for (int i = 0; i < matriz.length; i++) {
             for (int j = 0; j < matriz.length; j++) {
-                if (i != j && (matriz[i][j] != matriz[j][i] )) {
-                    noSimetrica = true ;
+                if (i != j && (matriz[i][j] != matriz[j][i])) {
+                    noSimetrica = true;
                 }
                 if (i != j && (matriz[i][j] == 1 && matriz[j][i] == 1) || (matriz[i][j] == -1 && matriz[j][i] == -1)) {
                     antisimetrica = false;
@@ -310,7 +321,7 @@ public class Matriz extends javax.swing.JFrame {
             this.lblSimetria1.setText("La matriz es simétrica.");
             this.lblSimetria1.setForeground(Color.green);
         }
-        
+
         if (antisimetrica) {
             this.lblAntisimetrica.setText("La matriz es antisimétrica.");
             this.lblAntisimetrica.setForeground(Color.green);
@@ -318,7 +329,7 @@ public class Matriz extends javax.swing.JFrame {
             this.lblAntisimetrica.setText("La matriz no es antisimétrica.");
             this.lblAntisimetrica.setForeground(Color.red);
         }
-        
+
         if (esMatrizTransitiva(matriz)) {
             this.lblTransitiva.setText("La matriz es transitiva.");
             this.lblTransitiva.setForeground(Color.green);
@@ -331,7 +342,6 @@ public class Matriz extends javax.swing.JFrame {
     private void btnRelacionMatrizActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRelacionMatrizActionPerformed
         lblRelacion.setText(obtenerRelacion(matriz));
     }//GEN-LAST:event_btnRelacionMatrizActionPerformed
-
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
